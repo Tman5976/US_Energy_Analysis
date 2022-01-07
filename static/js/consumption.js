@@ -3,8 +3,8 @@
 //     var selector = d3.select("#selDataset");
   
 //     // Use the list of sample names to populate the select options
-//     d3.json("samples.json").then((data) => {
-//       var sampleNames = data.names;
+//     d3.json("../../CEIR_energy.json").then((data) => {
+//       var State = data.id;
   
 //       sampleNames.forEach((sample) => {
 //         selector
@@ -19,9 +19,9 @@
 //       buildMetadata(firstSample);
 //     });
 //   }
+
 d3.json("../../Resources/CEIR_energy.json").then((data) => {
-    var Data = data.data
-    console.log(Data)
-    var sampleState = data.data.State
-    console.log(sampleState);
+    console.log(data);
+    var state = data[0];
+    console.log(state);
 });
