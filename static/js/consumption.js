@@ -1,27 +1,46 @@
-// function init() {
-//     // Grab a reference to the dropdown select element
-//     var selector = d3.select("#selDataset");
+function init() {
+    // Grab a reference to the dropdown select element
+    var selector = d3.select("#selDataset");
   
-//     // Use the list of sample names to populate the select options
-//     d3.json("../../CEIR_energy.json").then((data) => {
-//       var State = data.id;
+    // Use the list of sample names to populate the select options
+    d3.json("../../Resources/CEIR_energy_copy.json").then((data) => {
+        console.log(data);
+        var sampleState = data.id;
   
-//       sampleNames.forEach((sample) => {
-//         selector
-//           .append("option")
-//           .text(sample)
-//           .property("value", sample);
-//       });
+      sampleState.forEach((state) => {
+        selector
+          .append("option")
+          .text(state)
+          .property("value", state);
+      });
   
-//       // Use the first sample from the list to build the initial plots
-//       var firstSample = sampleNames[0];
-//       buildCharts(firstSample);
-//       buildMetadata(firstSample);
-//     });
-//   }
+      // Use the first sample from the list to build the initial plots
+      var firstState = sampleState[0];
+      buildCharts(firstState);
+      buildEnergyData(firstState);
+    });
+  }
 
-d3.json("../../Resources/CEIR_energy.json").then((data) => {
-    console.log(data);
-    var state = data[0];
-    console.log(state);
-});
+  init();
+
+  function optionChanged(newState) {
+      buildEnergyData(newState);
+      buildCharts(newState);
+  }
+
+function buildEnergyData(state) {
+    d3.json("../../Resources/CEIR_energy_copy.json").then((data) => {
+        var energyData = data.metadata;
+        console.log(energyData);
+        var resultArray = energyData.filter(sampleObj => sampleObj.State == state);
+        var result = resultArray[0];
+
+        var PANEL = d3.select("#sample-energyData");
+
+        PANEL.html("");
+
+        Object.entries(result).forEach(([key, value]) => {
+            PANEL.append("h6").text(`${key.toUpperCase()}: ${value}`);
+        });
+    });
+ }
